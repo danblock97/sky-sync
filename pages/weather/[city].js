@@ -3,6 +3,7 @@ import { useRouter } from "next/router";
 import CurrentWeather from "../components/CurrentWeather";
 import HourlyForecast from "../components/HourlyForecast";
 import DailyForecast from "../components/DailyForecast";
+import Head from "next/head";
 
 export default function CityWeather() {
 	const router = useRouter();
@@ -10,6 +11,17 @@ export default function CityWeather() {
 
 	return (
 		<div className="max-w-4xl mx-auto p-8">
+			<Head>
+				<title>Sky Sync - {city}</title>
+				<meta
+					name="description"
+					content={`Get the latest weather forecast for ${city}. Plan your day and stay informed about the weather conditions.`}
+				/>
+				<meta
+					name="keywords"
+					content={`weather, forecast, weather app, next.js, react, ${city}, temperature, conditions`}
+				/>
+			</Head>
 			<div className="flex justify-between items-center mb-8">
 				<h1 className="text-3xl font-semibold">Weather Forecast for {city}</h1>
 				<button
