@@ -1,15 +1,16 @@
 import useSWR from "swr";
 import { format } from "date-fns";
+import Image from "next/image";
 
 const fetcher = (url) => fetch(url).then((res) => res.json());
 
 export default function HourlyForecast({ city }) {
 	const { data, error } = useSWR(`/api/forecast?city=${city}`, fetcher);
 
-	if (error) return <div>Failed to load</div>;
-	if (!data || !data.list) return <div>Loading...</div>; // Check if data or data.list is undefined
+	if (error) return <div className="text-red-600">Failed to load</div>;
+	if (!data || !data.list)
+		return <div className="text-gray-600">Loading...</div>;
 
-	// Filter hourly data for the next few hours (e.g., next 6 hours)
 	const now = new Date();
 	const nextHours = data.list.filter((forecast) => {
 		const forecastDate = new Date(forecast.dt * 1000);
@@ -17,21 +18,31 @@ export default function HourlyForecast({ city }) {
 	});
 
 	return (
-		<div>
-			<h2 className="text-xl font-bold">Hourly Forecast</h2>
-			<div className="flex space-x-4">
+		<div className="border border-gray-300 rounded-lg p-4 mb-8">
+			<h2 className="text-xl font-semibold mb-4">3 Hourly Forecast</h2>
+			<div className="grid grid-cols-3 gap-4">
 				{nextHours.map((hour, index) => (
-					<div key={index} className="card w-36 bg-base-100 shadow-xl">
-						<div className="card-body">
-							<p>{format(new Date(hour.dt * 1000), "EEE, MMM d, HH:mm")}</p>
-							{hour.main && hour.main.temp && (
-								<p>{Math.round(hour.main.temp)}°C</p>
-							)}{" "}
-							{/* Check if temp is available */}
-							{hour.weather && hour.weather[0] && (
-								<p>{hour.weather[0].description}</p>
-							)}{" "}
-							{/* Check if weather is available */}
+					<div key={index} className="border border-gray-200 rounded-lg p-4">
+						<p className="text-lg">
+							{format(new Date(hour.dt * 1000), "HH:mm")}
+						</p>
+						<div className="flex items-center justify-center">
+							<Image
+								src={`http://openweathermap.org/img/w/${hour.weather[0].icon}.png`}
+								alt={hour.weather[0].description}
+								className="w-10 h-10"
+								width={40}
+								height={40}
+							/>
+						</div>
+						<div className="flex items-center justify-center">
+							<p className="text-gray-500">
+								H: {Math.round(hour.main.temp_max)}°
+							</p>
+							<span className="mx-2">/</span>
+							<p className="text-gray-500">
+								L: {Math.round(hour.main.temp_min)}°
+							</p>
 						</div>
 					</div>
 				))}

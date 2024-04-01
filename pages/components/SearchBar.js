@@ -1,26 +1,33 @@
+import { useState } from "react";
 import { useRouter } from "next/router";
 
 export default function SearchBar() {
 	const router = useRouter();
+	const [city, setCity] = useState("");
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
-		const city = e.target.city.value.trim();
-		if (city) {
-			router.push(`/weather/${city}`);
+		if (city.trim()) {
+			router.push(`/weather/${encodeURIComponent(city.trim())}`);
 		}
 	};
 
 	return (
-		<form onSubmit={handleSubmit} className="flex justify-center mt-10">
+		<form
+			onSubmit={handleSubmit}
+			className="flex items-center justify-center my-8"
+		>
 			<input
-				name="city"
 				type="text"
-				placeholder="Enter City Name"
-				className="input input-bordered input-primary w-full max-w-xs"
-				required
+				value={city}
+				onChange={(e) => setCity(e.target.value)}
+				placeholder="Enter city name"
+				className="py-2 px-4 mr-2 border border-gray-300 rounded-l-md focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
 			/>
-			<button type="submit" className="btn btn-primary ml-2">
+			<button
+				type="submit"
+				className="py-2 px-6 bg-blue-500 text-white rounded-r-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600"
+			>
 				Search
 			</button>
 		</form>
