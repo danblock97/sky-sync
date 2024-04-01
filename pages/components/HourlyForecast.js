@@ -1,3 +1,4 @@
+// HourlyForecast.js
 import useSWR from "swr";
 import { format } from "date-fns";
 import Image from "next/image";
@@ -11,38 +12,28 @@ export default function HourlyForecast({ city }) {
 	if (!data || !data.list)
 		return <div className="text-gray-600">Loading...</div>;
 
-	const now = new Date();
-	const nextHours = data.list.filter((forecast) => {
-		const forecastDate = new Date(forecast.dt * 1000);
-		return forecastDate > now && forecastDate.getHours() <= now.getHours() + 6;
-	});
+	const hourlyData = data.list.slice(0, 5); // Only show the next 5 hours
 
 	return (
-		<div className="border border-gray-300 rounded-lg p-4 mb-8">
-			<h2 className="text-xl font-semibold mb-4">3 Hourly Forecast</h2>
-			<div className="grid grid-cols-3 gap-4">
-				{nextHours.map((hour, index) => (
-					<div key={index} className="border border-gray-200 rounded-lg p-4">
+		<div className="bg-white rounded-lg shadow-md p-6 mb-6">
+			<h2 className="text-xl font-semibold mb-4">Hourly Forecast</h2>
+			<div>
+				{hourlyData.map((hour, index) => (
+					<div key={index} className="flex items-center justify-between mb-2">
 						<p className="text-lg">
 							{format(new Date(hour.dt * 1000), "HH:mm")}
 						</p>
-						<div className="flex items-center justify-center">
+						<div className="flex items-center">
+							<p className="text-lg font-semibold mr-2">
+								{Math.round(hour.main.temp)}°C
+							</p>
 							<Image
 								src={`http://openweathermap.org/img/w/${hour.weather[0].icon}.png`}
 								alt={hour.weather[0].description}
-								className="w-10 h-10"
-								width={40}
-								height={40}
+								className="w-8 h-8"
+								width={32}
+								height={32}
 							/>
-						</div>
-						<div className="flex items-center justify-center">
-							<p className="text-gray-500">
-								H: {Math.round(hour.main.temp_max)}°
-							</p>
-							<span className="mx-2">/</span>
-							<p className="text-gray-500">
-								L: {Math.round(hour.main.temp_min)}°
-							</p>
 						</div>
 					</div>
 				))}

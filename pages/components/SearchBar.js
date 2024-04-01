@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useRouter } from "next/router";
+import { FiSearch } from "react-icons/fi";
 
 export default function SearchBar() {
 	const router = useRouter();
@@ -26,9 +27,10 @@ export default function SearchBar() {
 			/>
 			<button
 				type="submit"
-				className="py-2 px-6 bg-blue-500 text-white rounded-r-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600"
+				className="py-2 px-6 bg-blue-500 text-white rounded-r-md flex items-center justify-center hover:bg-blue-600 focus:outline-none focus:bg-blue-600"
 			>
-				Search
+				<FiSearch className="mr-2" />
+				<span>Search</span>
 			</button>
 		</form>
 	);

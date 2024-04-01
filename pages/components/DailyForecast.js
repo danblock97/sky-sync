@@ -1,3 +1,4 @@
+// DailyForecast.js
 import useSWR from "swr";
 import { format } from "date-fns";
 import Image from "next/image";
@@ -11,33 +12,30 @@ export default function DailyForecast({ city }) {
 	if (!data || !data.list)
 		return <div className="text-gray-600">Loading...</div>;
 
-	const currentDate = new Date();
-	const nextDays = data.list.filter((forecast) => {
-		const forecastDate = new Date(forecast.dt * 1000);
-		return forecastDate.getDate() !== currentDate.getDate();
-	});
+	const dailyData = data.list.filter((item, index) => index % 8 === 0); // Only show once per day
 
 	return (
-		<div className="border border-gray-300 rounded-lg p-4 mb-8">
-			<h2 className="text-xl font-semibold mb-4">10 Day Forecast</h2>
-			<div className="grid grid-cols-1 gap-4">
-				{nextDays.map((forecast, index) => (
-					<div key={index} className="border border-gray-200 rounded-lg p-4">
-						<p className="text-lg">
-							{format(new Date(forecast.dt * 1000), "EEEE")}
-						</p>
-						<div className="flex items-center justify-between">
-							<Image
-								src={`http://openweathermap.org/img/w/${forecast.weather[0].icon}.png`}
-								alt={forecast.weather[0].description}
-								className="w-10 h-10"
-								width={40}
-								height={40}
-							/>
-							<p className="text-gray-500">
-								H: {Math.round(forecast.main.temp_max)}° L:{" "}
-								{Math.round(forecast.main.temp_min)}°
+		<div className="bg-white rounded-lg shadow-md p-6 mb-6">
+			<h2 className="text-xl font-semibold mb-4">Daily Forecast</h2>
+			<div>
+				{dailyData.map((day, index) => (
+					<div key={index} className="flex items-center justify-between mb-2">
+						<p className="text-lg">{format(new Date(day.dt * 1000), "EEE")}</p>
+						<div className="flex items-center">
+							<p className="text-lg font-semibold mr-2">
+								{Math.round(day.main.temp_max)}°C
 							</p>
+							<span className="text-lg text-gray-500 mr-2">/</span>
+							<p className="text-lg text-gray-500">
+								{Math.round(day.main.temp_min)}°C
+							</p>
+							<Image
+								src={`http://openweathermap.org/img/w/${day.weather[0].icon}.png`}
+								alt={day.weather[0].description}
+								className="w-8 h-8"
+								width={32}
+								height={32}
+							/>
 						</div>
 					</div>
 				))}

@@ -1,3 +1,4 @@
+// CurrentWeather.js
 import useSWR from "swr";
 import { format, formatDistanceToNow } from "date-fns";
 import { FiSunrise, FiSunset } from "react-icons/fi";
@@ -18,38 +19,31 @@ export default function CurrentWeather({ city }) {
 	const sunset = format(new Date(data.sys.sunset * 1000), "HH:mm");
 
 	return (
-		<div className="border border-gray-300 rounded-lg p-4 mb-8">
-			<div className="flex justify-between mb-4">
-				<p className="text-sm text-gray-600">{format(currentDate, "EEEE")}</p>
-				<p className="text-sm text-gray-600">
-					{formatDistanceToNow(currentDate)} ago
+		<div className="bg-white rounded-lg shadow-md p-6 mb-6">
+			<h2 className="text-xl font-semibold mb-4">Current Weather</h2>
+			<div className="flex flex-col items-center">
+				<p className="text-4xl font-semibold mb-2">
+					{Math.round(data.main.temp)}°C
 				</p>
-			</div>
-			<div className="flex items-center justify-between mb-4">
-				<p className="text-4xl">{Math.round(data.main.temp)}°C</p>
-				<div className="flex items-center">
-					<FiSunrise className="mr-2" />
-					<p>{sunrise}</p>
+				<div className="flex items-center mb-2">
+					<FiSunrise className="mr-1" />
+					<p className="text-sm">{sunrise}</p>
 				</div>
-				<div className="flex items-center">
-					<FiSunset className="mr-2" />
-					<p>{sunset}</p>
+				<div className="flex items-center mb-4">
+					<FiSunset className="mr-1" />
+					<p className="text-sm">{sunset}</p>
 				</div>
-			</div>
-			<div className="flex items-center justify-between mb-4">
 				<p className="text-lg">{data.weather[0].description}</p>
-				<Image
-					src={`http://openweathermap.org/img/w/${data.weather[0].icon}.png`}
-					alt={data.weather[0].description}
-					className="w-10 h-10"
-					width={40}
-					height={40}
-				/>
+				<div className="mt-2">
+					<Image
+						src={`http://openweathermap.org/img/w/${data.weather[0].icon}.png`}
+						alt={data.weather[0].description}
+						className="w-12 h-12"
+						width={48}
+						height={48}
+					/>
+				</div>
 			</div>
-			<p className="text-gray-500">
-				H: {Math.round(data.main.temp_max)}° L: {Math.round(data.main.temp_min)}
-				°
-			</p>
 		</div>
 	);
 }
