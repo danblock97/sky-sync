@@ -3,10 +3,12 @@ import { useRouter } from "next/router";
 export default function SearchBar() {
 	const router = useRouter();
 
-	const handleSearch = async (e) => {
+	const handleSubmit = (e) => {
 		e.preventDefault();
-		const city = e.target.city.value;
-		router.push(`/weather/${city}`);
+		const city = e.target.city.value.trim();
+		if (city) {
+			router.push(`/weather/${city}`);
+		}
 	};
 
 	return (
