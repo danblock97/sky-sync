@@ -22,8 +22,10 @@ export default function CityWeather() {
 					content={`weather, forecast, weather app, next.js, react, ${city}, temperature, conditions`}
 				/>
 			</Head>
-			<div className="flex justify-between items-center mb-8">
-				<h1 className="text-3xl font-semibold">Weather Forecast for {city}</h1>
+			<div className="flex justify-between items-center flex-wrap mb-8">
+				<h1 className="text-xl font-semibold mb-4 md:mb-0 md:mr-4 lg:text-3xl">
+					Weather Forecast for {city}
+				</h1>
 				<button
 					onClick={() => router.back()}
 					className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
@@ -31,6 +33,7 @@ export default function CityWeather() {
 					Search Another Location
 				</button>
 			</div>
+
 			<div className="grid grid-cols-1 md:grid-cols-2 gap-8">
 				<div>
 					<CurrentWeather city={city} />
