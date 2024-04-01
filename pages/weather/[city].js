@@ -12,7 +12,7 @@ export default function CityWeather() {
 	return (
 		<div className="max-w-4xl mx-auto p-8">
 			<Head>
-				<title>Sky Sync - {city}</title>
+				<title>Sky Watcher - {city}</title>
 				<meta
 					name="description"
 					content={`Get the latest weather forecast for ${city}. Plan your day and stay informed about the weather conditions.`}
